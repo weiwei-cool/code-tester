@@ -4,7 +4,7 @@
 
 A tool to check your algorithm.
 
-[![Build Status](https://img.shields.io/badge/build-passing-green)](https://github.com/StelaHaveno/code-tester)
+[![Build Status](https://img.shields.io/badge/build-passing-green)](https://github.com/weiwei-cool/code-tester)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
 `code-tester` is a simple and powerful CLI tool for testing algorithms. It allows you to run an executable file, optionally provide input and expected output files, and verify correctness within a time limit.

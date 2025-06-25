@@ -4,7 +4,7 @@
 
 一个用于检查算法正确性的工具。
 
-[![Build Status](https://img.shields.io/badge/build-passing-green)](https://github.com/StelaHaveno/code-tester)
+[![Build Status](https://img.shields.io/badge/build-passing-green)](https://github.com/weiwei-cool/code-tester)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
 `code-tester` 是一个简单而强大的命令行工具，用于测试你编写的算法程序。你可以运行可执行文件、提供输入和预期输出文件，并在指定的时间限制内验证其正确性。
