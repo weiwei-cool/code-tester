@@ -4,6 +4,8 @@
 
 A tool to check your algorithm.
 
+[中文](README_ZH.md)
+
 [![Build Status](https://img.shields.io/badge/build-passing-green)](https://github.com/weiwei-cool/code-tester)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
