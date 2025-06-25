@@ -4,11 +4,9 @@ on:
   push:
     tags:
       - 'v*'
-    branches: [ "main" ]
   pull_request:
     tags:
       - 'v*'
-    branches: [ "main" ]
 
 env:
   CARGO_TERM_COLOR: always
