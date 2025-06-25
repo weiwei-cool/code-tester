@@ -15,30 +15,59 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
+        arch: [x86_64, aarch64] # 定义架构矩阵
 
     runs-on: ${{ matrix.os }}
 
     steps:
       - uses: actions/checkout@v4
       - name: Build
-        run: cargo build --verbose
+        run: cargo build --release
 
-      - name: Determine executable name
-        id: executable
-        run: |
-          # 获取项目名称（假设是 Cargo.toml 中的 package.name）
-          PROJECT_NAME=$(grep -m 1 '^name =' Cargo.toml | cut -d '"' -f2)
-          echo "PROJECT_NAME=$PROJECT_NAME" >> $GITHUB_ENV
-          
-          # 根据操作系统设置不同的可执行文件名
-          if [[ "$RUNNER_OS" == "Windows" ]]; then
-            echo "EXECUTABLE_NAME=$PROJECT_NAME.exe" >> $GITHUB_ENV
-          else
-            echo "EXECUTABLE_NAME=$PROJECT_NAME" >> $GITHUB_ENV
-          fi
-
-      - name: Upload executable as artifact
-        uses: actions/upload-artifact@v3
+      # 上传Linux x86_64平台的构建产物
+      - name: Upload artifact (Linux)
+        if: matrix.os == 'ubuntu-latest' && matrix.arch == 'x86_64'
+        uses: actions/upload-artifact@v2
         with:
-          name: code-tester-${{ env.RUNNER_OS }}
-          path: target/release/${{ env.EXECUTABLE_NAME }}
+          name: ubuntu-latest-code-tester
+          path: target/release/code-tester
+
+      # 上传Linux aarch64平台的构建产物
+      - name: Upload artifact (Linux aarch64)
+        if: matrix.os == 'ubuntu-latest' && matrix.arch == 'aarch64'
+        uses: actions/upload-artifact@v2
+        with:
+          name: ubuntu-latest-code-tester-aarch64
+          path: target/release/code-tester
+
+      # 上传macOS x86_64平台的构建产物
+      - name: Upload artifact (macOS)
+        if: matrix.os == 'macos-latest' && matrix.arch == 'x86_64'
+        uses: actions/upload-artifact@v2
+        with:
+          name: macos-latest-code-tester
+          path: target/release/code-tester
+
+      # 上传macOS aarch64平台的构建产物
+      - name: Upload artifact (macOS aarch64)
+        if: matrix.os == 'macos-latest' && matrix.arch == 'aarch64'
+        uses: actions/upload-artifact@v2
+        with:
+          name: macos-latest-code-tester-aarch64
+          path: target/release/code-tester
+
+      # 上传Windows x86_64平台的构建产物
+      - name: Upload artifact (Windows)
+        if: matrix.os == 'windows-latest' && matrix.arch == 'x86_64'
+        uses: actions/upload-artifact@v2
+        with:
+          name: windows-latest-code-tester
+          path: target/release/code-tester.exe
+
+      # 上传Windows aarch64平台的构建产物
+      - name: Upload artifact (Windows aarch64)
+        if: matrix.os == 'windows-latest' && matrix.arch == 'aarch64'
+        uses: actions/upload-artifact@v2
+        with:
+          name: windows-latest-code-tester-aarch64
+          path: target/release/code-tester.exe
