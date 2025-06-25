@@ -26,7 +26,7 @@ impl File{
     pub fn new(path:&String, file_type: FileType) -> Self {
         let file_path = Path::new(&path);
         if !file_path.exists() {
-            panic!("File does not exist!")
+            panic!("File does not exist!");
         }
         let path = path.to_string();
         let file_name = file_path.file_name().unwrap().to_str().unwrap();
@@ -85,7 +85,7 @@ impl PreparationMethod for File{
     }
 
     fn get_file_path(&self) -> String {
-        let current_dir = env::current_dir().expect("无法获取当前目录");
+        let current_dir = env::current_dir().expect("Cannot get current dir.");
         let absolute_path = if Path::new(&self.path).is_absolute() {
             PathBuf::from(&self.path)
         } else {

@@ -5,6 +5,7 @@ pub struct Checker {
     time_limit: u128,
 }
 
+#[derive(Clone)]
 pub enum CheckerStatus {
     UnCheck,
     True,
