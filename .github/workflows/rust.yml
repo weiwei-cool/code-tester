@@ -22,3 +22,23 @@ jobs:
       - uses: actions/checkout@v4
       - name: Build
         run: cargo build --verbose
+
+      - name: Determine executable name
+        id: executable
+        run: |
+          # 获取项目名称（假设是 Cargo.toml 中的 package.name）
+          PROJECT_NAME=$(grep -m 1 '^name =' Cargo.toml | cut -d '"' -f2)
+          echo "PROJECT_NAME=$PROJECT_NAME" >> $GITHUB_ENV
+          
+          # 根据操作系统设置不同的可执行文件名
+          if [[ "$RUNNER_OS" == "Windows" ]]; then
+            echo "EXECUTABLE_NAME=$PROJECT_NAME.exe" >> $GITHUB_ENV
+          else
+            echo "EXECUTABLE_NAME=$PROJECT_NAME" >> $GITHUB_ENV
+          fi
+
+      - name: Upload executable as artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: code-tester-${{ env.RUNNER_OS }}
+          path: target/release/${{ env.EXECUTABLE_NAME }}
