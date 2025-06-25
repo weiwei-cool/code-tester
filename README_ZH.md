@@ -13,7 +13,7 @@
 
 ## 📦 功能特性
 
-- 运行你的编译后的算法程序
+- 运行你的编译后的算法程序或者python代码
 - 提供自定义的输入和预期输出文件
 - 设置运行时间上限
 - 支持无输入模式
@@ -81,6 +81,14 @@ code-tester test ./my_algorithm \
 - 从 `./in.txt` 获取输入
 - 将输出与 `./ans.txt` 中的标准答案进行比较
 - 如果执行时间超过 1000 毫秒则判定为失败
+
+当然也能运行python程序：
+```bash
+code-tester test ./my_code.py \
+    --input-file ./in.txt \
+    --out-file ./ans.txt \
+    --time-limit 1000
+```
 
 ---
 

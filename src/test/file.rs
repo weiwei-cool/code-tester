@@ -1,5 +1,5 @@
-use std::path::Path;
-use std::fs;
+use std::path::{Path, PathBuf};
+use std::{env, fs};
 
 pub trait PreparationMethod {
     fn get_type(&self) -> FileType;
@@ -85,6 +85,14 @@ impl PreparationMethod for File{
     }
 
     fn get_file_path(&self) -> String {
-        self.path.clone()
+        let current_dir = env::current_dir().expect("无法获取当前目录");
+        let absolute_path = if Path::new(&self.path).is_absolute() {
+            PathBuf::from(&self.path)
+        } else {
+            let mut abs_path = current_dir;
+            abs_path.push(&self.path);
+            abs_path
+        };
+        absolute_path.to_str().unwrap().to_string()
     }
 }

@@ -13,7 +13,7 @@ A tool to check your algorithm.
 
 ## 📦 Features
 
-- Run your compiled algorithm binary
+- Run your compiled algorithm binary or python code
 - Provide custom input and expected output files
 - Set time limits for execution
 - Support for no-input mode
@@ -81,6 +81,14 @@ This command:
 - Feeds it input from `./in.txt`
 - Compares the output with `./ans.txt`
 - Fails if execution exceeds 1000 ms
+
+Also, it can run python code:
+```bash
+code-tester test ./my_code.py \
+    --input-file ./in.txt \
+    --out-file ./ans.txt \
+    --time-limit 1000
+```
 
 ---
 

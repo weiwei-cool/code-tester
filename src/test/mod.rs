@@ -32,7 +32,7 @@ impl Test {
     }
 
     pub fn run(&self) {
-        let python_flag = &self.file[3..] == ".py";
+        let python_flag = &self.file[self.file.len()-3..] == ".py";
         let running_file = if python_flag {
             File::new(&self.file, FileType::Python)
         } else {
@@ -81,7 +81,7 @@ impl Test {
                 println!("Running time: {}ms", runner.get_running_time().to_string().green());
             }
             CheckerStatus::False => {
-                println!("Result: {}", "Wrong Answer".white());
+                println!("Result: {}", "Wrong Answer".red());
                 println!("Running time: {}ms", runner.get_running_time().to_string().green());
                 println!("Output: \n{}", runner.get_output().trim());
             }
