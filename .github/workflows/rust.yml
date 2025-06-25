@@ -3,8 +3,12 @@ name: Rust CI
 on:
   push:
     branches: [ "main" ]
+    tags:
+      - 'v*'
   pull_request:
     branches: [ "main" ]
+    tags:
+      - 'v*'
 
 env:
   CARGO_TERM_COLOR: always
@@ -24,50 +28,32 @@ jobs:
       - name: Build
         run: cargo build --release
 
-      # 上传Linux x86_64平台的构建产物
-      - name: Upload artifact (Linux)
-        if: matrix.os == 'ubuntu-latest' && matrix.arch == 'x86_64'
+      - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: ubuntu-latest-code-tester
-          path: target/release/code-tester
+          name: ${{ matrix.os }}-${{ matrix.arch }}-code-tester
+          path: |
+            target/release/code-tester
+            target/release/code-tester.exe
 
-      # 上传Linux aarch64平台的构建产物
-      - name: Upload artifact (Linux aarch64)
-        if: matrix.os == 'ubuntu-latest' && matrix.arch == 'aarch64'
-        uses: actions/upload-artifact@v4
-        with:
-          name: ubuntu-latest-code-tester-aarch64
-          path: target/release/code-tester
+      - name: Check if Stable Version
+        id: version_check
+        run: |
+          echo "Tag: ${{ github.ref }}"
+          if [[ "${{ github.ref }}" =~ ^refs/tags/v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+          echo "is_stable=true" >> $GITHUB_OUTPUT
+          else
+          echo "is_stable=false" >> $GITHUB_OUTPUT
+          fi
 
-      # 上传macOS x86_64平台的构建产物
-      - name: Upload artifact (macOS)
-        if: matrix.os == 'macos-latest' && matrix.arch == 'x86_64'
-        uses: actions/upload-artifact@v4
+      - name: Create or Update Release
+        if: steps.version_check.outputs.is_stable == 'true'
+        uses: softprops/action-gh-release@v2
         with:
-          name: macos-latest-code-tester
-          path: target/release/code-tester
-
-      # 上传macOS aarch64平台的构建产物
-      - name: Upload artifact (macOS aarch64)
-        if: matrix.os == 'macos-latest' && matrix.arch == 'aarch64'
-        uses: actions/upload-artifact@v4
-        with:
-          name: macos-latest-code-tester-aarch64
-          path: target/release/code-tester
-
-      # 上传Windows x86_64平台的构建产物
-      - name: Upload artifact (Windows)
-        if: matrix.os == 'windows-latest' && matrix.arch == 'x86_64'
-        uses: actions/upload-artifact@v4
-        with:
-          name: windows-latest-code-tester
-          path: target/release/code-tester.exe
-
-      # 上传Windows aarch64平台的构建产物
-      - name: Upload artifact (Windows aarch64)
-        if: matrix.os == 'windows-latest' && matrix.arch == 'aarch64'
-        uses: actions/upload-artifact@v4
-        with:
-          name: windows-latest-code-tester-aarch64
-          path: target/release/code-tester.exe
+          release_name: Release ${{ github.ref_name }}
+          body_path: changelog/${{ github.ref_name }}.md
+          draft: false
+          prerelease: false
+          files: |
+            target/release/code-tester
+            target/release/code-tester.exe
