@@ -27,7 +27,7 @@ enum Commands{
         ans_file: Option<String>,
 
         #[arg(short, long)]
-        /// Upper bound of algorithm runtime.
+        /// Upper bound of algorithm runtime(ms).
         time_limit: Option<u128>,
 
         #[arg(short, long)]
